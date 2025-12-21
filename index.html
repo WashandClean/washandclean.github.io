@@ -6,6 +6,7 @@
   <title>Wash&Clean – Detalhamento Automóvel</title>
   <link rel="stylesheet" href="styles.css" />
 </head>
+
 <body>
   <!-- Navegação -->
   <nav class="navbar">
@@ -40,7 +41,6 @@
       <div class="service-grid">
         <div class="service-card">
           <h3>Lavagem Exterior</h3>
-          <!-- Preço aproximado para lavagem exterior -->
           <p class="price">€ 20</p>
           <ul>
             <li>Lavagem de rodas, pneus, escape e depósito</li>
@@ -49,9 +49,9 @@
             <li>Restauro de plásticos e proteção da pintura</li>
           </ul>
         </div>
+
         <div class="service-card">
           <h3>Lavagem Interior</h3>
-          <!-- Preço aproximado para lavagem interior -->
           <p class="price">€ 30</p>
           <ul>
             <li>Aspiração e extração de sujidade profunda</li>
@@ -60,9 +60,9 @@
             <li>Vidros e espelhos sem marcas</li>
           </ul>
         </div>
+
         <div class="service-card">
           <h3>Detalhamento Completo</h3>
-          <!-- Preço aproximado para detalhamento completo -->
           <p class="price">€ 90</p>
           <ul>
             <li>Todos os serviços interiores e exteriores combinados</li>
@@ -71,9 +71,9 @@
             <li>Proteção cerâmica opcional</li>
           </ul>
         </div>
+
         <div class="service-card">
           <h3>Extras</h3>
-          <!-- Preço aproximado para serviços extra, desde -->
           <p class="price">desde € 10</p>
           <ul>
             <li>Remoção de pelos de animais</li>
@@ -128,7 +128,7 @@
   <section id="areas" class="areas">
     <div class="container">
       <h2>Áreas de serviço</h2>
-      <p>Servimos a região de Guimarães, Braga e Porto. Para outras zonas, contacte‑nos para saber disponibilidade.</p>
+      <p>Servimos a região de Guimarães, Braga e Porto. Para outras zonas, contacte-nos para saber disponibilidade.</p>
       <div class="area-grid">
         <div class="area-item">
           <h3>Guimarães</h3>
@@ -153,43 +153,51 @@
       <form id="bookingForm">
         <div class="form-group">
           <label for="clienteNome">Nome</label>
-          <input type="text" id="clienteNome" name="clienteNome" required />
+          <input type="text" id="clienteNome" name="nome" required />
         </div>
+
         <div class="form-group">
           <label for="clienteEmail">Email</label>
-          <input type="email" id="clienteEmail" name="clienteEmail" required />
+          <input type="email" id="clienteEmail" name="email" required />
         </div>
+
         <div class="form-group">
           <label for="clienteServico">Serviço</label>
-          <select id="clienteServico" name="clienteServico" required>
+          <select id="clienteServico" name="servico" required>
             <option value="Exterior">Lavagem Exterior</option>
             <option value="Interior">Lavagem Interior</option>
             <option value="Completo">Detalhamento Completo</option>
             <option value="Extra">Extras</option>
           </select>
         </div>
+
         <div class="form-group">
           <label for="clienteLocal">Localidade</label>
-          <select id="clienteLocal" name="clienteLocal" required>
+          <select id="clienteLocal" name="local" required>
             <option value="Guimaraes">Guimarães</option>
             <option value="Braga">Braga</option>
             <option value="Porto">Porto</option>
           </select>
         </div>
+
         <div class="form-group">
           <label for="clienteData">Data</label>
-          <input type="date" id="clienteData" name="clienteData" required />
+          <input type="date" id="clienteData" name="data" required />
         </div>
+
         <div class="form-group">
           <label for="clienteHora">Hora</label>
-          <input type="time" id="clienteHora" name="clienteHora" required />
+          <input type="time" id="clienteHora" name="hora" required />
         </div>
+
         <div class="form-group">
           <label for="clienteMensagem">Mensagem</label>
-          <textarea id="clienteMensagem" name="clienteMensagem" rows="3"></textarea>
+          <textarea id="clienteMensagem" name="mensagem" rows="3"></textarea>
         </div>
+
         <button type="submit" class="btn-primary">Confirmar Marcação</button>
       </form>
+
       <div id="bookingResult" class="result"></div>
     </div>
   </section>
@@ -203,6 +211,7 @@
         Telefone: 912 345 678<br/>
         Guimarães, Braga</p>
       </div>
+
       <div class="footer-col">
         <h3>Links</h3>
         <ul>
@@ -213,6 +222,7 @@
           <li><a href="#marcacao">Marcação</a></li>
         </ul>
       </div>
+
       <div class="footer-col">
         <h3>Redes Sociais</h3>
         <ul class="socials">
@@ -222,13 +232,14 @@
         </ul>
       </div>
     </div>
+
     <div class="copyright">
       © 2025 Wash&Clean – Todos os direitos reservados
     </div>
   </footer>
 
-
+  <!-- Scripts (ordem correta) -->
   <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
-    <script src="script.js"></script>
+  <script src="script.js" defer></script>
 </body>
 </html>
