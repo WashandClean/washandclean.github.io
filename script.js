@@ -1,3 +1,6 @@
+(function(){
+  emailjs.init("cdJDp8D7sHW03DtO");
+})();
 // Slider functionality for antes & depois
 window.addEventListener('DOMContentLoaded', function () {
   const range = document.getElementById('sliderRange');
