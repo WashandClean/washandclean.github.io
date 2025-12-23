@@ -415,4 +415,44 @@ footer{
    Se não usas o slider, isto garante que nada interfere.
 ================================= */
 .slider-container, .img-wrapper, #sliderRange { display:none !important; }
+/* ================================
+   BOTÃO DO FORMULÁRIO (PRO)
+   - Não mexe nos botões do hero
+================================= */
+.btn-submit{
+  width: 100%;
+  margin-top: 12px;
+  padding: 14px 18px;
+  border: none;
+  border-radius: 14px;
+  background: linear-gradient(120deg, #0a74da, #00397a);
+  color: #fff;
+  font-size: 1.05rem;
+  font-weight: 900;
+  letter-spacing: .2px;
+  cursor: pointer;
+  box-shadow: 0 14px 30px rgba(0,0,0,.16);
+  transition: transform .18s ease, box-shadow .18s ease, filter .18s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.btn-submit:hover{
+  transform: translateY(-2px);
+  box-shadow: 0 18px 40px rgba(0,0,0,.20);
+  filter: brightness(1.05);
+}
+
+.btn-submit:active{
+  transform: translateY(0px);
+  box-shadow: 0 12px 26px rgba(0,0,0,.16);
+}
+
+.btn-submit:focus{
+  outline: none;
+  box-shadow: 0 0 0 4px rgba(10,116,218,.25), 0 14px 30px rgba(0,0,0,.16);
+}
+
 
