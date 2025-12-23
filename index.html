@@ -4,6 +4,10 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Wash&Clean – Detalhamento Automóvel</title>
+
+  <!-- Favicon (ícone no separador) -->
+  <link rel="icon" type="image/png" href="assets/favicon.png" />
+
   <link rel="stylesheet" href="styles.css" />
 </head>
 
@@ -11,9 +15,11 @@
   <!-- Navegação -->
   <nav class="navbar">
     <div class="container">
-      <div class="logo">
-  <img src="assets/logo.png" alt="Wash&Clean Logo">
-</div>
+      <!-- Logo na navbar -->
+      <a class="logo" href="#top" aria-label="Wash&Clean">
+        <img src="assets/logo.png" alt="Wash&Clean Logo" />
+      </a>
+
       <ul class="nav-links">
         <li><a href="#servicos">Serviços</a></li>
         <li><a href="#difere">Antes & Depois</a></li>
@@ -25,7 +31,7 @@
   </nav>
 
   <!-- Hero -->
-  <header class="hero">
+  <header class="hero" id="top">
     <div class="container hero-content">
       <h1>Luxo e Cuidado<br><span class="highlight">Onde quer que esteja</span></h1>
       <p>Serviços premium de limpeza e detalhamento automóvel no conforto da sua casa.</p>
@@ -122,28 +128,28 @@
       <div class="before-after-grid">
         <figure class="ba-card">
           <div class="ba-media">
-            <img src="./assets/antes1.jpg" alt="Antes">
+            <img src="assets/antes1.jpg" alt="Antes" loading="lazy">
             <span class="badge before">Antes</span>
           </div>
         </figure>
 
         <figure class="ba-card">
           <div class="ba-media">
-            <img src="./assets/depois1.jpg" alt="Depois">
+            <img src="assets/depois1.jpg" alt="Depois" loading="lazy">
             <span class="badge after">Depois</span>
           </div>
         </figure>
 
         <figure class="ba-card">
           <div class="ba-media">
-            <img src="./assets/antes2.jpg" alt="Antes">
+            <img src="assets/antes2.jpg" alt="Antes" loading="lazy">
             <span class="badge before">Antes</span>
           </div>
         </figure>
 
         <figure class="ba-card">
           <div class="ba-media">
-            <img src="./assets/depois2.jpg" alt="Depois">
+            <img src="assets/depois2.jpg" alt="Depois" loading="lazy">
             <span class="badge after">Depois</span>
           </div>
         </figure>
@@ -241,6 +247,7 @@
           <textarea id="clienteMensagem" name="mensagem" rows="3"></textarea>
         </div>
 
+        <!-- Botão PRO -->
         <button type="submit" class="btn-primary btn-submit">Confirmar Marcação</button>
       </form>
 
@@ -291,3 +298,4 @@
   <script src="script.js" defer></script>
 </body>
 </html>
+
