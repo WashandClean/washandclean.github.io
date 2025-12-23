@@ -1,6 +1,6 @@
 /* ================================
    Wash&Clean — Styles (PRO)
-   Substitui o teu styles.css inteiro
+   (COLA e substitui o teu styles.css inteiro)
 ================================= */
 
 /* Reset */
@@ -33,18 +33,21 @@ body{
   backdrop-filter: blur(10px);
   border-bottom: 1px solid rgba(0,0,0,.06);
 }
+
 .navbar .container{
   display:flex;
   justify-content: space-between;
   align-items:center;
   padding: 14px 0;
 }
-.logo-text{
-  font-weight: 800;
-  font-size: 1.35rem;
-  color: #0a74da;
-  letter-spacing: .2px;
+
+/* ✅ LOGO (40px) */
+.logo img{
+  height: 40px;
+  width: auto;
+  display: block;
 }
+
 .nav-links{
   list-style:none;
   display:flex;
@@ -101,6 +104,7 @@ body{
   font-weight: 800;
   transition: transform .2s, box-shadow .2s, background .2s, color .2s;
 }
+
 .btn-primary{
   background:#fff;
   color:#0a74da;
@@ -196,7 +200,6 @@ body{
 
 /* ================================
    RESULTADOS REAIS (ANTES/DEPOIS)
-   ✅ Sem cortar imagens
 ================================= */
 .before-after-grid{
   display:grid;
@@ -204,7 +207,6 @@ body{
   gap: 22px;
   margin-top: 30px;
 }
-
 @media (max-width: 1100px){
   .before-after-grid{ grid-template-columns: repeat(2, 1fr); }
 }
@@ -238,16 +240,15 @@ body{
   justify-content:center;
 }
 
-/* ✅ Mostra a imagem completa (não corta) */
+/* ✅ Mostra a imagem completa */
 .ba-media img{
   width: 100%;
   height: 100%;
-  object-fit: contain;      /* <- mantém imagem inteira */
+  object-fit: contain;
   object-position: center;
   display:block;
 }
 
-/* Badge */
 .badge{
   position:absolute;
   left: 12px;
@@ -350,12 +351,42 @@ body{
   box-shadow: 0 0 0 4px rgba(10,116,218,.12);
 }
 
-button.btn-primary{
+/* ✅ Remove conflito: NÃO usar mais "button.btn-primary" */
+
+/* ✅ Botão do formulário (PRO) */
+.btn-submit{
   width: 100%;
+  margin-top: 12px;
+  padding: 14px 18px;
   border: none;
-  cursor:pointer;
-  margin-top: 6px;
+  border-radius: 14px;
+  background: linear-gradient(120deg, #0a74da, #00397a);
+  color: #fff;
+  font-size: 1.05rem;
+  font-weight: 900;
+  letter-spacing: .2px;
+  cursor: pointer;
+  box-shadow: 0 14px 30px rgba(0,0,0,.16);
+  transition: transform .18s ease, box-shadow .18s ease, filter .18s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
 }
+.btn-submit:hover{
+  transform: translateY(-2px);
+  box-shadow: 0 18px 40px rgba(0,0,0,.20);
+  filter: brightness(1.05);
+}
+.btn-submit:active{
+  transform: translateY(0px);
+  box-shadow: 0 12px 26px rgba(0,0,0,.16);
+}
+.btn-submit:focus{
+  outline: none;
+  box-shadow: 0 0 0 4px rgba(10,116,218,.25), 0 14px 30px rgba(0,0,0,.16);
+}
+
 .result{
   margin-top: 14px;
   text-align:center;
@@ -410,49 +441,6 @@ footer{
 }
 
 /* ================================
-   FIX: regras antigas do slider
-   (evita conflitos e cortes)
-   Se não usas o slider, isto garante que nada interfere.
+   FIX: slider antigo (desliga)
 ================================= */
 .slider-container, .img-wrapper, #sliderRange { display:none !important; }
-/* ================================
-   BOTÃO DO FORMULÁRIO (PRO)
-   - Não mexe nos botões do hero
-================================= */
-.btn-submit{
-  width: 100%;
-  margin-top: 12px;
-  padding: 14px 18px;
-  border: none;
-  border-radius: 14px;
-  background: linear-gradient(120deg, #0a74da, #00397a);
-  color: #fff;
-  font-size: 1.05rem;
-  font-weight: 900;
-  letter-spacing: .2px;
-  cursor: pointer;
-  box-shadow: 0 14px 30px rgba(0,0,0,.16);
-  transition: transform .18s ease, box-shadow .18s ease, filter .18s ease;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-}
-
-.btn-submit:hover{
-  transform: translateY(-2px);
-  box-shadow: 0 18px 40px rgba(0,0,0,.20);
-  filter: brightness(1.05);
-}
-
-.btn-submit:active{
-  transform: translateY(0px);
-  box-shadow: 0 12px 26px rgba(0,0,0,.16);
-}
-
-.btn-submit:focus{
-  outline: none;
-  box-shadow: 0 0 0 4px rgba(10,116,218,.25), 0 14px 30px rgba(0,0,0,.16);
-}
-
-
