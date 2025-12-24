@@ -76,11 +76,13 @@ body{
 ================================= */
 .hero{
   position: relative;
-  min-height: 100vh;
+  min-height: 70vh;      /* ← antes era 100vh */
+  max-height: 720px;     /* ← limita em ecrãs grandes */
   display:flex;
   align-items:center;
   text-align:center;
   color:#fff;
+}
 
   /* Fundo: gradiente + imagem */
   background-image:
