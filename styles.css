@@ -643,7 +643,50 @@ footer{
   font-size: .85rem;
   color: rgba(229,240,255,.65);
 }
+/* ================================
+   EXTRAS (CHECKBOXES) - PRO
+================================ */
+.help-text{
+  display:block;
+  margin-top: 8px;
+  font-size: .92rem;
+  color: rgba(31,41,55,.7);
+}
 
+.extras-grid{
+  margin-top: 10px;
+  display:grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px 14px;
+}
+
+@media (max-width: 560px){
+  .extras-grid{ grid-template-columns: 1fr; }
+}
+
+.chk{
+  display:flex;
+  align-items:flex-start;
+  gap: 10px;
+  padding: 10px 12px;
+  border: 1px solid rgba(0,0,0,.08);
+  border-radius: 12px;
+  background: rgba(10,116,218,.04);
+  cursor:pointer;
+  transition: transform .15s ease, background .15s ease, border-color .15s ease;
+}
+
+.chk:hover{
+  transform: translateY(-1px);
+  background: rgba(10,116,218,.06);
+  border-color: rgba(10,116,218,.22);
+}
+
+.chk input{
+  margin-top: 3px;
+  width: 18px;
+  height: 18px;
+}
 /* ================================
    FIX: slider antigo (desliga)
 ================================= */
