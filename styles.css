@@ -72,31 +72,27 @@ body{
 }
 
 /* ================================
-   HERO (Imagem de fundo) — FIXED
+   HERO (Imagem de fundo)
    ✅ retângulo mais pequeno
-   ✅ sem erros de CSS
    ✅ usa assets/hero-car.jpg
 ================================= */
 .hero{
   position: relative;
-  min-height: 68vh;        /* mais pequeno */
-  max-height: 650px;       /* limita em ecrãs grandes */
+  min-height: 68vh;
+  max-height: 650px;
   display:flex;
   align-items:center;
   text-align:center;
   color:#fff;
 
-  /* Fundo: gradiente + imagem */
   background-image:
     linear-gradient(to bottom, rgba(3,18,38,.62), rgba(3,18,38,.86)),
     url("assets/hero-car.jpg");
-
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
 
-  /* Compensa navbar fixa */
-  padding-top: 74px;
+  padding-top: 74px; /* compensa navbar fixa */
 }
 
 /* overlay extra luxuoso */
@@ -112,7 +108,7 @@ body{
   z-index:2;
   max-width: 840px;
   margin: 0 auto;
-  padding: 90px 20px 70px;   /* menos alto */
+  padding: 90px 20px 70px;
 }
 
 .hero-content h1{
@@ -176,7 +172,7 @@ body{
   background: rgba(255,255,255,.16);
 }
 
-/* Mobile hero ✅ mais pequeno também */
+/* Mobile hero */
 @media (max-width: 768px){
   .hero{
     min-height: 58vh;
@@ -210,7 +206,7 @@ body{
 
 .difference p, .areas p{
   color:#6b7280;
-  max-width: 850px;
+  max-width: 900px;
   margin: 0 auto 10px;
 }
 
@@ -362,14 +358,131 @@ body{
 }
 
 /* ================================
-   ÁREAS
+   ÁREAS + MAPA (NOVO)
+   - estilo “realista/pro”
+   - mapa à esquerda, painel à direita
 ================================= */
+.map-wrap{
+  margin-top: 26px;
+  display:grid;
+  grid-template-columns: 1.6fr 0.9fr;
+  gap: 18px;
+  align-items: stretch;
+}
+
+/* mapa */
+.service-map{
+  width: 100%;
+  height: 520px;
+  border-radius: 18px;
+  overflow: hidden;
+  border: 1px solid rgba(0,0,0,.08);
+  box-shadow: 0 18px 50px rgba(0,0,0,.12);
+  background: #0b1220; /* fallback enquanto carrega */
+}
+
+/* painel */
+.map-panel{
+  background: #0b1220;
+  color: #e5f0ff;
+  border-radius: 18px;
+  border: 1px solid rgba(255,255,255,.08);
+  box-shadow: 0 18px 50px rgba(0,0,0,.12);
+  padding: 18px;
+  text-align: left;
+}
+
+.map-panel h3{
+  font-size: 1.05rem;
+  font-weight: 900;
+  margin-bottom: 12px;
+  letter-spacing: .2px;
+}
+
+.coverage-legend{
+  display:flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 12px;
+  border-radius: 14px;
+  background: rgba(255,255,255,.06);
+  border: 1px solid rgba(255,255,255,.10);
+  margin-bottom: 14px;
+}
+
+.legend-item{
+  display:flex;
+  align-items:center;
+  gap: 10px;
+  font-weight: 650;
+  color: rgba(229,240,255,.95);
+}
+
+.dot{
+  width: 12px;
+  height: 12px;
+  border-radius: 4px;
+  display:inline-block;
+}
+.dot-free{ background: #1cc88a; }
+.dot-paid{ background: #ff4d4d; }
+
+.fee-output{
+  padding: 12px;
+  border-radius: 14px;
+  background: rgba(255,255,255,.06);
+  border: 1px solid rgba(255,255,255,.10);
+}
+
+.fee-line{
+  display:flex;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 8px 0;
+  border-bottom: 1px solid rgba(255,255,255,.08);
+  font-weight: 650;
+}
+.fee-line:last-of-type{
+  border-bottom: none;
+}
+
+.fee-line.total{
+  font-size: 1.05rem;
+  font-weight: 950;
+}
+
+.fee-note{
+  margin-top: 10px;
+  font-size: .92rem;
+  color: rgba(229,240,255,.75);
+}
+
+/* Leaflet: arredondar controlos */
+.leaflet-control-zoom a{
+  border-radius: 10px !important;
+}
+.leaflet-control{
+  border-radius: 14px !important;
+  overflow: hidden;
+}
+
+/* Mobile: mapa em coluna */
+@media (max-width: 980px){
+  .map-wrap{
+    grid-template-columns: 1fr;
+  }
+  .service-map{
+    height: 420px;
+  }
+}
+
+/* cards áreas (mantém os 2 cards por baixo) */
 .area-grid{
   display:flex;
   flex-wrap: wrap;
   justify-content:center;
   gap: 22px;
-  margin-top: 20px;
+  margin-top: 22px;
 }
 
 .area-item{
@@ -535,4 +648,5 @@ footer{
    FIX: slider antigo (desliga)
 ================================= */
 .slider-container, .img-wrapper, #sliderRange { display:none !important; }
+
 
