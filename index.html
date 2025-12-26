@@ -14,8 +14,13 @@
   <!-- Favicon -->
   <link rel="icon" type="image/png" href="assets/favicon.png" />
 
-  <!-- Leaflet (mapa) -->
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <!-- Leaflet (MAPA) -->
+  <link
+    rel="stylesheet"
+    href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+    crossorigin=""
+  />
 
   <!-- CSS -->
   <link rel="stylesheet" href="styles.css" />
@@ -214,37 +219,57 @@
   </section>
 
   <!-- =========================
-       ÁREAS (COM MAPA + CÁLCULO)
+       ÁREAS (MAPA + TAXA)
   ========================== -->
   <section id="areas" class="areas">
     <div class="container">
       <h2>Áreas de serviço</h2>
-      <p>
-        Servimos Guimarães e Braga.
-        <br>
-        <b>Até 15 km não paga nada.</b> A partir daí: <b>0,25 €/km</b> (apenas os km extra).
-      </p>
+      <p>Clique no mapa para calcular a taxa de deslocação. Até <b>15 km</b> é grátis; depois <b>0,25€/km</b>.</p>
 
-      <div class="map-wrap">
-        <div id="serviceMap" class="service-map" aria-label="Mapa de serviço"></div>
+      <div class="area-grid" style="margin-top:22px; align-items:stretch;">
+        <!-- MAPA -->
+        <div class="area-item" style="width:min(980px, 100%); padding:16px;">
+          <div id="serviceMap" style="height:420px; border-radius:16px; overflow:hidden; background:#0b1220;"></div>
+        </div>
 
-        <div class="map-panel">
-          <h3>Taxa de deslocação</h3>
+        <!-- PAINEL -->
+        <div class="area-item" style="width:min(420px, 100%); padding:22px;">
+          <h3 style="margin-bottom:12px;">Taxa de deslocação</h3>
 
-          <div class="coverage-legend">
-            <div class="legend-item"><span class="dot dot-free"></span> Até 15 km — Grátis</div>
-            <div class="legend-item"><span class="dot dot-paid"></span> +15 km — 0,25 €/km</div>
+          <p style="margin-bottom:10px; color:#374151;">
+            <b>Zona selecionada:</b> <span id="feeZone">—</span><br>
+            <b>Distância aprox.:</b> <span id="feeDistance">—</span><br>
+            <b>Km cobrados:</b> <span id="feeExtraKm">—</span><br>
+          </p>
+
+          <div style="padding:14px 16px; border-radius:14px; background:#f6f8fb; border:1px solid rgba(0,0,0,.06);">
+            <div style="font-weight:900; color:#0a74da; font-size:1.25rem;">
+              Total: <span id="feeTotal">—</span>
+            </div>
+            <div id="feeNote" style="margin-top:6px; color:#6b7280; font-weight:650;">
+              —
+            </div>
           </div>
 
-          <div id="feeOutput" class="fee-output">
-            <div class="fee-line"><span>Base usada:</span> <b>—</b></div>
-            <div class="fee-line"><span>Distância:</span> <b>—</b></div>
-            <div class="fee-line total"><span>Total:</span> <b>—</b></div>
-            <p class="fee-note">Clica no mapa para selecionar o teu local.</p>
+          <p style="margin-top:12px; color:#6b7280; font-size:.95rem;">
+            * Cálculo aproximado por linha reta. Se houver dúvidas, confirme por mensagem.
+          </p>
+
+          <div style="margin-top:14px; display:flex; gap:10px; flex-wrap:wrap;">
+            <span style="display:inline-flex; gap:8px; align-items:center; font-weight:750; color:#111827;">
+              <span style="width:12px; height:12px; border-radius:3px; background:#1cc88a;"></span>
+              Até 15 km (Grátis)
+            </span>
+
+            <span style="display:inline-flex; gap:8px; align-items:center; font-weight:750; color:#111827;">
+              <span style="width:12px; height:12px; border-radius:3px; background:#ff4d4d;"></span>
+              Fora da zona (0,25€/km)
+            </span>
           </div>
         </div>
       </div>
 
+      <!-- Cards simples (mantém o teu estilo) -->
       <div class="area-grid">
         <div class="area-item">
           <h3>Guimarães</h3>
@@ -363,13 +388,18 @@
     </div>
   </footer>
 
-  <!-- Leaflet (mapa) -->
-  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-
-  <!-- Scripts -->
+  <!-- EmailJS -->
   <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+
+  <!-- Leaflet (MAPA) -->
+  <script
+    src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+    integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+    crossorigin=""
+  ></script>
+
+  <!-- Script do site -->
   <script src="script.js" defer></script>
 
 </body>
 </html>
-
