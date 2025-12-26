@@ -53,19 +53,15 @@ window.addEventListener("DOMContentLoaded", function () {
     }
     return el;
   }
-  const hidLat = ensureHidden("clienteLat", "lat");
-  const hidLng = ensureHidden("clienteLng", "lng");
   const hidMaps = ensureHidden("clienteMapaUrl", "mapa_url");
   const hidDist = ensureHidden("clienteDistKm", "dist_km");
   const hidFee = ensureHidden("clienteTaxa", "taxa");
 
   // ---------- Iniciar mapa ----------
-  let map, clickMarker, baseMarkers = [];
+  let map, clickMarker;
 
   if (mapEl && window.L) {
-    map = L.map("serviceMap", {
-      scrollWheelZoom: false,
-    });
+    map = L.map("serviceMap", { scrollWheelZoom: false });
 
     // Centrar no Minho (entre Braga e Guimarães)
     map.setView([41.51, -8.36], 11);
@@ -78,8 +74,9 @@ window.addEventListener("DOMContentLoaded", function () {
 
     // Markers das bases + círculo grátis 15km em cada base
     BASES.forEach((b) => {
-      const m = L.marker([b.lat, b.lng]).addTo(map).bindPopup(`<b>${b.name}</b> (base)`);
-      baseMarkers.push(m);
+      L.marker([b.lat, b.lng])
+        .addTo(map)
+        .bindPopup(`<b>${b.name}</b> (base)`);
 
       L.circle([b.lat, b.lng], {
         radius: FREE_KM * 1000,
@@ -122,26 +119,25 @@ window.addEventListener("DOMContentLoaded", function () {
             : `Depois de ${FREE_KM} km: ${RATE.toFixed(2).replace(".", ",")}€/km (base mais próxima: ${best.name}).`;
       }
 
-      // Form: zona + morada (coords + link)
+      // Google Maps link
       const mapsUrl = `https://www.google.com/maps?q=${lat.toFixed(6)},${lng.toFixed(6)}`;
+
+      // Atualiza "Zona"
       if (inputZona) inputZona.value = best.name;
 
+      // Preenche morada automaticamente (podes editar manualmente depois)
       if (inputMorada) {
         inputMorada.value = `Local selecionado no mapa: ${lat.toFixed(6)}, ${lng.toFixed(6)} | ${mapsUrl}`;
       }
 
-      // Hidden: coords + url + valores
-      hidLat.value = lat.toFixed(6);
-      hidLng.value = lng.toFixed(6);
+      // Hidden (para email)
       hidMaps.value = mapsUrl;
       hidDist.value = round1(distKm).toString();
-      hidFee.value = fee === 0 ? "0" : fee.toFixed(2);
+      hidFee.value = fee === 0 ? "0.00" : fee.toFixed(2);
 
-      // Guarda para usar no submit
       mapEl.dataset.selected = "1";
     });
 
-    // (opcional) quando o mapa aparece depois de scroll/resize
     setTimeout(() => map.invalidateSize(), 200);
     window.addEventListener("resize", () => map.invalidateSize());
   }
@@ -159,14 +155,14 @@ window.addEventListener("DOMContentLoaded", function () {
 
     const name = document.getElementById("clienteNome").value.trim();
     const email = document.getElementById("clienteEmail").value.trim();
-    const telefone = document.getElementById("clienteTelefone").value.trim();
+    const phone = document.getElementById("clienteTelefone").value.trim();
     const morada = document.getElementById("clienteMorada").value.trim();
 
-    const servico = document.getElementById("clienteServico").value;
+    const service = document.getElementById("clienteServico").value;
     const local = document.getElementById("clienteLocal").value;
 
-    const dataStr = document.getElementById("clienteData").value;
-    const horaStr = document.getElementById("clienteHora").value;
+    const date = document.getElementById("clienteData").value;
+    const time = document.getElementById("clienteHora").value;
 
     const msg = document.getElementById("clienteMensagem").value.trim();
 
@@ -174,20 +170,14 @@ window.addEventListener("DOMContentLoaded", function () {
     const extras = Array.from(document.querySelectorAll('input[name="extras"]:checked'))
       .map((x) => x.value);
 
-    if (!name || !email || !telefone || !morada || !dataStr || !horaStr) {
+    if (!name || !email || !phone || !morada || !date || !time) {
       resultDiv.textContent = "Preencha todos os campos obrigatórios.";
       return;
     }
 
-    // (recomendado) exigir clique no mapa: descomenta se quiseres obrigar
-    // if (!mapEl?.dataset.selected) {
-    //   resultDiv.textContent = "Selecione o local no mapa para calcular a deslocação.";
-    //   return;
-    // }
-
-    // Validar data/hora (o teu horário)
-    const [year, month, day] = dataStr.split("-").map(Number);
-    const [h, m] = horaStr.split(":").map(Number);
+    // Validar horário
+    const [year, month, day] = date.split("-").map(Number);
+    const [h, m] = time.split(":").map(Number);
     const selected = new Date(year, month - 1, day, h, m);
     const weekday = selected.getDay();
     const totalMin = h * 60 + m;
@@ -206,8 +196,8 @@ window.addEventListener("DOMContentLoaded", function () {
       return;
     }
 
-    // Evitar marcações duplicadas
-    const bookingKey = `${dataStr}T${horaStr}`;
+    // Evitar duplicados
+    const bookingKey = `${date}T${time}`;
     const bookingsKey = "washandclean_bookings";
     const bookings = JSON.parse(localStorage.getItem(bookingsKey) || "[]");
 
@@ -219,25 +209,30 @@ window.addEventListener("DOMContentLoaded", function () {
     bookings.push(bookingKey);
     localStorage.setItem(bookingsKey, JSON.stringify(bookings));
 
-    // Mensagem final (extras + notas)
+    // Monta mensagem final
     const extrasText = extras.length ? `Extras: ${extras.join(", ")}` : "Extras: nenhum";
     const userMsg = msg ? `Notas: ${msg}` : "Notas: sem notas";
-
     const finalMessage = `${extrasText}\n${userMsg}`;
 
-    // Dados enviados para o EmailJS
+    // ✅ TemplateParams ALINHADOS COM EMAILJS
     const templateParams = {
       name,
       email,
-      telefone,
-      servico,
+      phone,
+      service,
       local,
       morada,
+
+      // extras no email
+      extras: extras.join(", ") || "Nenhum",
+
+      // mapa + distância + taxa
       mapa_url: hidMaps.value || "",
       dist_km: hidDist.value || "",
       taxa: hidFee.value || "",
-      data: dataStr,
-      hora: horaStr,
+
+      date,
+      time,
       message: finalMessage,
     };
 
@@ -249,7 +244,7 @@ window.addEventListener("DOMContentLoaded", function () {
         resultDiv.textContent = "✅ Marcação efetuada com sucesso! Email enviado.";
         form.reset();
 
-        // reset painel / dados mapa
+        // reset painel
         if (feeZone) feeZone.textContent = "—";
         if (feeDistance) feeDistance.textContent = "—";
         if (feeExtraKm) feeExtraKm.textContent = "—";
@@ -258,8 +253,6 @@ window.addEventListener("DOMContentLoaded", function () {
         if (clickMarker) clickMarker.remove();
         if (mapEl) delete mapEl.dataset.selected;
 
-        hidLat.value = "";
-        hidLng.value = "";
         hidMaps.value = "";
         hidDist.value = "";
         hidFee.value = "";
@@ -270,3 +263,4 @@ window.addEventListener("DOMContentLoaded", function () {
       });
   });
 });
+
