@@ -285,66 +285,127 @@
   </section>
 
   <!-- =========================
-       MARCAÇÃO
-  ========================== -->
-  <section id="marcacao" class="booking">
-    <div class="container">
-      <h2>Marcar serviço</h2>
+     MARCAÇÃO
+========================== -->
+<section id="marcacao" class="booking">
+  <div class="container">
+    <h2>Marcar serviço</h2>
 
-      <form id="bookingForm">
+    <form id="bookingForm">
 
-        <div class="form-group">
-          <label for="clienteNome">Nome</label>
-          <input type="text" id="clienteNome" required>
+      <div class="form-group">
+        <label for="clienteNome">Nome</label>
+        <input type="text" id="clienteNome" name="nome" required>
+      </div>
+
+      <div class="form-group">
+        <label for="clienteEmail">Email</label>
+        <input type="email" id="clienteEmail" name="email" required>
+      </div>
+
+      <!-- ✅ NOVO: Telefone -->
+      <div class="form-group">
+        <label for="clienteTelefone">Telefone</label>
+        <input type="tel" id="clienteTelefone" name="telefone" placeholder="Ex: 912 345 678" required>
+      </div>
+
+      <!-- ✅ NOVO: Local exato (o mapa pode preencher isto automaticamente depois) -->
+      <div class="form-group">
+        <label for="clienteMorada">Local exato (morada)</label>
+        <input
+          type="text"
+          id="clienteMorada"
+          name="morada"
+          placeholder="Rua, nº, localidade (ex: Rua X, 123, Braga)"
+          required
+        >
+        <small class="help-text">
+          Dica: se usares o mapa, este campo pode ser preenchido automaticamente.
+        </small>
+      </div>
+
+      <div class="form-group">
+        <label for="clienteServico">Serviço</label>
+        <select id="clienteServico" name="servico" required>
+          <option value="Lavagem Interior Simples">Lavagem Interior Simples (€15)</option>
+          <option value="Lavagem Interior Completa">Lavagem Interior Completa (€25)</option>
+          <option value="Lavagem Exterior Simples">Lavagem Exterior Simples (€15)</option>
+          <option value="Lavagem Exterior Completa">Lavagem Exterior Completa (€25)</option>
+
+          <!-- ✅ NOVOS -->
+          <option value="Interior + Exterior Simples">Interior + Exterior Simples</option>
+          <option value="Interior + Exterior Completa">Interior + Exterior Completa</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="clienteLocal">Zona</label>
+        <select id="clienteLocal" name="local" required>
+          <option value="Guimarães">Guimarães</option>
+          <option value="Braga">Braga</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="clienteData">Data</label>
+        <input type="date" id="clienteData" name="data" required>
+      </div>
+
+      <div class="form-group">
+        <label for="clienteHora">Hora</label>
+        <input type="time" id="clienteHora" name="hora" required>
+      </div>
+
+      <!-- ✅ EXTRAS (em vez de ser opção no serviço) -->
+      <div class="form-group">
+        <label>Extras (opcional)</label>
+
+        <div class="extras-grid">
+          <label class="chk">
+            <input type="checkbox" name="extras" value="Remoção total de pelos (€3)">
+            <span>Remoção total de pelos (€3)</span>
+          </label>
+
+          <label class="chk">
+            <input type="checkbox" name="extras" value="Perfume interior (€3)">
+            <span>Perfume interior (€3)</span>
+          </label>
+
+          <label class="chk">
+            <input type="checkbox" name="extras" value="Hidratação plásticos/couro (€3)">
+            <span>Hidratação plásticos/couro (€3)</span>
+          </label>
+
+          <label class="chk">
+            <input type="checkbox" name="extras" value="Desinfeção a vapor (€5)">
+            <span>Desinfeção a vapor (€5)</span>
+          </label>
+
+          <label class="chk">
+            <input type="checkbox" name="extras" value="Limpeza do teto interior (€3)">
+            <span>Limpeza do teto interior (€3)</span>
+          </label>
+
+          <label class="chk">
+            <input type="checkbox" name="extras" value="Tratamento anti-chuva nos vidros (€5)">
+            <span>Tratamento anti-chuva nos vidros (€5)</span>
+          </label>
         </div>
+      </div>
 
-        <div class="form-group">
-          <label for="clienteEmail">Email</label>
-          <input type="email" id="clienteEmail" required>
-        </div>
+      <div class="form-group">
+        <label for="clienteMensagem">Mensagem (opcional)</label>
+        <textarea id="clienteMensagem" name="mensagem" rows="3" placeholder="Notas adicionais (ex: carro muito sujo, portão, referências, etc.)"></textarea>
+      </div>
 
-        <div class="form-group">
-          <label for="clienteServico">Serviço</label>
-          <select id="clienteServico" required>
-            <option>Lavagem Interior Simples</option>
-            <option>Lavagem Interior Completa</option>
-            <option>Lavagem Exterior Simples</option>
-            <option>Lavagem Exterior Completa</option>
-            <option>Serviços Extra</option>
-          </select>
-        </div>
+      <button type="submit" class="btn-primary btn-submit">
+        Confirmar Marcação
+      </button>
+    </form>
 
-        <div class="form-group">
-          <label for="clienteLocal">Localidade</label>
-          <select id="clienteLocal" required>
-            <option>Guimarães</option>
-            <option>Braga</option>
-          </select>
-        </div>
-
-        <div class="form-group">
-          <label for="clienteData">Data</label>
-          <input type="date" id="clienteData" required>
-        </div>
-
-        <div class="form-group">
-          <label for="clienteHora">Hora</label>
-          <input type="time" id="clienteHora" required>
-        </div>
-
-        <div class="form-group">
-          <label for="clienteMensagem">Mensagem</label>
-          <textarea id="clienteMensagem" rows="3"></textarea>
-        </div>
-
-        <button type="submit" class="btn-primary btn-submit">
-          Confirmar Marcação
-        </button>
-      </form>
-
-      <div id="bookingResult" class="result"></div>
-    </div>
-  </section>
+    <div id="bookingResult" class="result"></div>
+  </div>
+</section>
 
   <!-- =========================
        FOOTER
