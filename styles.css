@@ -644,23 +644,32 @@ footer{
   color: rgba(229,240,255,.65);
 }
 /* ================================
-   EXTRAS (CHECKBOXES) - PRO
-================================ */
+   MAPA + EXTRAS (NOVO)
+================================= */
 .help-text{
   display:block;
-  margin-top: 8px;
-  font-size: .92rem;
-  color: rgba(31,41,55,.7);
+  margin-top: 6px;
+  color:#6b7280;
+  font-size: .9rem;
+  font-weight: 600;
+}
+
+#serviceMap{
+  width: 100%;
+  height: 420px;
+  border-radius: 16px;
+  overflow: hidden;
+  background: #0b1220;
 }
 
 .extras-grid{
-  margin-top: 10px;
   display:grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 10px 14px;
+  margin-top: 8px;
 }
 
-@media (max-width: 560px){
+@media (max-width: 600px){
   .extras-grid{ grid-template-columns: 1fr; }
 }
 
@@ -671,21 +680,19 @@ footer{
   padding: 10px 12px;
   border: 1px solid rgba(0,0,0,.08);
   border-radius: 12px;
-  background: rgba(10,116,218,.04);
-  cursor:pointer;
-  transition: transform .15s ease, background .15s ease, border-color .15s ease;
-}
-
-.chk:hover{
-  transform: translateY(-1px);
-  background: rgba(10,116,218,.06);
-  border-color: rgba(10,116,218,.22);
+  background: #f6f8fb;
+  cursor: pointer;
+  user-select: none;
 }
 
 .chk input{
   margin-top: 3px;
-  width: 18px;
-  height: 18px;
+}
+
+.chk span{
+  font-weight: 700;
+  color:#111827;
+  font-size: .95rem;
 }
 /* ================================
    FIX: slider antigo (desliga)
