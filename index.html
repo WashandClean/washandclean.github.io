@@ -14,6 +14,9 @@
   <!-- Favicon -->
   <link rel="icon" type="image/png" href="assets/favicon.png" />
 
+  <!-- Leaflet (mapa) -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+
   <!-- CSS -->
   <link rel="stylesheet" href="styles.css" />
 </head>
@@ -211,12 +214,36 @@
   </section>
 
   <!-- =========================
-       ÁREAS
+       ÁREAS (COM MAPA + CÁLCULO)
   ========================== -->
   <section id="areas" class="areas">
     <div class="container">
       <h2>Áreas de serviço</h2>
-      <p>Servimos Guimarães e Braga.</p>
+      <p>
+        Servimos Guimarães e Braga.
+        <br>
+        <b>Até 15 km não paga nada.</b> A partir daí: <b>0,25 €/km</b> (apenas os km extra).
+      </p>
+
+      <div class="map-wrap">
+        <div id="serviceMap" class="service-map" aria-label="Mapa de serviço"></div>
+
+        <div class="map-panel">
+          <h3>Taxa de deslocação</h3>
+
+          <div class="coverage-legend">
+            <div class="legend-item"><span class="dot dot-free"></span> Até 15 km — Grátis</div>
+            <div class="legend-item"><span class="dot dot-paid"></span> +15 km — 0,25 €/km</div>
+          </div>
+
+          <div id="feeOutput" class="fee-output">
+            <div class="fee-line"><span>Base usada:</span> <b>—</b></div>
+            <div class="fee-line"><span>Distância:</span> <b>—</b></div>
+            <div class="fee-line total"><span>Total:</span> <b>—</b></div>
+            <p class="fee-note">Clica no mapa para selecionar o teu local.</p>
+          </div>
+        </div>
+      </div>
 
       <div class="area-grid">
         <div class="area-item">
@@ -335,6 +362,9 @@
       © 2025 Wash&Clean – Todos os direitos reservados
     </div>
   </footer>
+
+  <!-- Leaflet (mapa) -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
   <!-- Scripts -->
   <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
