@@ -33,8 +33,6 @@
   ========================== -->
   <nav class="navbar">
     <div class="container">
-
-      <!-- Logo -->
       <a class="logo" href="#top" aria-label="Wash&Clean">
         <img src="assets/logo.png" alt="Wash&Clean Logo">
       </a>
@@ -81,7 +79,6 @@
       <h2>Os nossos serviços</h2>
 
       <div class="service-grid">
-
         <div class="service-card">
           <h3>Lavagem Interior Simples</h3>
           <p class="price">€ 15</p>
@@ -147,7 +144,6 @@
             <li>Tratamento anti-chuva</li>
           </ul>
         </div>
-
       </div>
     </div>
   </section>
@@ -226,50 +222,47 @@
       <h2>Áreas de serviço</h2>
       <p>Clique no mapa para calcular a taxa de deslocação. Até <b>15 km</b> é grátis; depois <b>0,25€/km</b>.</p>
 
-      <div class="area-grid" style="margin-top:22px; align-items:stretch;">
+      <div class="areas-map-grid">
         <!-- MAPA -->
-        <div class="area-item" style="width:min(980px, 100%); padding:16px;">
-          <div id="serviceMap" style="height:420px; border-radius:16px; overflow:hidden; background:#0b1220;"></div>
+        <div class="map-card">
+          <div id="serviceMap"></div>
         </div>
 
         <!-- PAINEL -->
-        <div class="area-item" style="width:min(420px, 100%); padding:22px;">
-          <h3 style="margin-bottom:12px;">Taxa de deslocação</h3>
+        <div class="fee-card">
+          <h3>Taxa de deslocação</h3>
 
-          <p style="margin-bottom:10px; color:#374151;">
+          <p class="fee-lines">
             <b>Zona selecionada:</b> <span id="feeZone">—</span><br>
             <b>Distância aprox.:</b> <span id="feeDistance">—</span><br>
             <b>Km cobrados:</b> <span id="feeExtraKm">—</span><br>
           </p>
 
-          <div style="padding:14px 16px; border-radius:14px; background:#f6f8fb; border:1px solid rgba(0,0,0,.06);">
-            <div style="font-weight:900; color:#0a74da; font-size:1.25rem;">
+          <div class="fee-total-box">
+            <div class="fee-total">
               Total: <span id="feeTotal">—</span>
             </div>
-            <div id="feeNote" style="margin-top:6px; color:#6b7280; font-weight:650;">
-              —
-            </div>
+            <div id="feeNote" class="fee-note">—</div>
           </div>
 
-          <p style="margin-top:12px; color:#6b7280; font-size:.95rem;">
+          <p class="fee-disclaimer">
             * Cálculo aproximado por linha reta. Se houver dúvidas, confirme por mensagem.
           </p>
 
-          <div style="margin-top:14px; display:flex; gap:10px; flex-wrap:wrap;">
-            <span style="display:inline-flex; gap:8px; align-items:center; font-weight:750; color:#111827;">
-              <span style="width:12px; height:12px; border-radius:3px; background:#1cc88a;"></span>
+          <div class="legend">
+            <span class="legend-item">
+              <span class="swatch swatch-green"></span>
               Até 15 km (Grátis)
             </span>
-
-            <span style="display:inline-flex; gap:8px; align-items:center; font-weight:750; color:#111827;">
-              <span style="width:12px; height:12px; border-radius:3px; background:#ff4d4d;"></span>
+            <span class="legend-item">
+              <span class="swatch swatch-red"></span>
               Fora da zona (0,25€/km)
             </span>
           </div>
         </div>
       </div>
 
-      <!-- Cards simples (mantém o teu estilo) -->
+      <!-- Cards simples -->
       <div class="area-grid">
         <div class="area-item">
           <h3>Guimarães</h3>
@@ -285,134 +278,142 @@
   </section>
 
   <!-- =========================
-     MARCAÇÃO
-========================== -->
-<section id="marcacao" class="booking">
-  <div class="container">
-    <h2>Marcar serviço</h2>
+       MARCAÇÃO
+  ========================== -->
+  <section id="marcacao" class="booking">
+    <div class="container">
+      <h2>Marcar serviço</h2>
 
-    <form id="bookingForm">
-
-      <div class="form-group">
-        <label for="clienteNome">Nome</label>
-        <input type="text" id="clienteNome" name="nome" required>
-      </div>
-
-      <div class="form-group">
-        <label for="clienteEmail">Email</label>
-        <input type="email" id="clienteEmail" name="email" required>
-      </div>
-
-      <!-- ✅ NOVO: Telefone -->
-      <div class="form-group">
-        <label for="clienteTelefone">Telefone</label>
-        <input type="tel" id="clienteTelefone" name="telefone" placeholder="Ex: 912 345 678" required>
-      </div>
-
-      <!-- ✅ NOVO: Local exato (o mapa pode preencher isto automaticamente depois) -->
-      <div class="form-group">
-        <label for="clienteMorada">Local exato (morada)</label>
-        <input
-          type="text"
-          id="clienteMorada"
-          name="morada"
-          placeholder="Rua, nº, localidade (ex: Rua X, 123, Braga)"
-          required
-        >
-        <small class="help-text">
-          Dica: se usares o mapa, este campo pode ser preenchido automaticamente.
-        </small>
-      </div>
-
-      <div class="form-group">
-        <label for="clienteServico">Serviço</label>
-        <select id="clienteServico" name="servico" required>
-          <option value="Lavagem Interior Simples">Lavagem Interior Simples (€15)</option>
-          <option value="Lavagem Interior Completa">Lavagem Interior Completa (€25)</option>
-          <option value="Lavagem Exterior Simples">Lavagem Exterior Simples (€15)</option>
-          <option value="Lavagem Exterior Completa">Lavagem Exterior Completa (€25)</option>
-
-          <!-- ✅ NOVOS -->
-          <option value="Interior + Exterior Simples">Interior + Exterior Simples</option>
-          <option value="Interior + Exterior Completa">Interior + Exterior Completa</option>
-        </select>
-      </div>
-
-      <div class="form-group">
-        <label for="clienteLocal">Zona</label>
-        <select id="clienteLocal" name="local" required>
-          <option value="Guimarães">Guimarães</option>
-          <option value="Braga">Braga</option>
-        </select>
-      </div>
-
-      <div class="form-group">
-        <label for="clienteData">Data</label>
-        <input type="date" id="clienteData" name="data" required>
-      </div>
-
-      <div class="form-group">
-        <label for="clienteHora">Hora</label>
-        <input type="time" id="clienteHora" name="hora" required>
-      </div>
-
-      <!-- ✅ EXTRAS (em vez de ser opção no serviço) -->
-      <div class="form-group">
-        <label>Extras (opcional)</label>
-
-        <div class="extras-grid">
-          <label class="chk">
-            <input type="checkbox" name="extras" value="Remoção total de pelos (€3)">
-            <span>Remoção total de pelos (€3)</span>
-          </label>
-
-          <label class="chk">
-            <input type="checkbox" name="extras" value="Perfume interior (€3)">
-            <span>Perfume interior (€3)</span>
-          </label>
-
-          <label class="chk">
-            <input type="checkbox" name="extras" value="Hidratação plásticos/couro (€3)">
-            <span>Hidratação plásticos/couro (€3)</span>
-          </label>
-
-          <label class="chk">
-            <input type="checkbox" name="extras" value="Desinfeção a vapor (€5)">
-            <span>Desinfeção a vapor (€5)</span>
-          </label>
-
-          <label class="chk">
-            <input type="checkbox" name="extras" value="Limpeza do teto interior (€3)">
-            <span>Limpeza do teto interior (€3)</span>
-          </label>
-
-          <label class="chk">
-            <input type="checkbox" name="extras" value="Tratamento anti-chuva nos vidros (€5)">
-            <span>Tratamento anti-chuva nos vidros (€5)</span>
-          </label>
+      <form id="bookingForm">
+        <div class="form-group">
+          <label for="clienteNome">Nome</label>
+          <input type="text" id="clienteNome" name="nome" required>
         </div>
-      </div>
 
-      <div class="form-group">
-        <label for="clienteMensagem">Mensagem (opcional)</label>
-        <textarea id="clienteMensagem" name="mensagem" rows="3" placeholder="Notas adicionais (ex: carro muito sujo, portão, referências, etc.)"></textarea>
-      </div>
+        <div class="form-group">
+          <label for="clienteEmail">Email</label>
+          <input type="email" id="clienteEmail" name="email" required>
+        </div>
 
-      <button type="submit" class="btn-primary btn-submit">
-        Confirmar Marcação
-      </button>
-    </form>
+        <div class="form-group">
+          <label for="clienteTelefone">Telefone</label>
+          <input type="tel" id="clienteTelefone" name="telefone" placeholder="Ex: 912 345 678" required>
+        </div>
 
-    <div id="bookingResult" class="result"></div>
-  </div>
-</section>
+        <div class="form-group">
+          <label for="clienteMorada">Local exato (morada)</label>
+          <input
+            type="text"
+            id="clienteMorada"
+            name="morada"
+            placeholder="Rua, nº, localidade (ex: Rua X, 123, Braga)"
+            required
+          >
+          <small class="help-text">
+            Dica: seleciona o local no mapa (Áreas) para preencher automaticamente.
+          </small>
+        </div>
+
+        <div class="form-group">
+          <label for="clienteServico">Serviço</label>
+          <select id="clienteServico" name="servico" required>
+            <option value="Lavagem Interior Simples">Lavagem Interior Simples (€15)</option>
+            <option value="Lavagem Interior Completa">Lavagem Interior Completa (€25)</option>
+            <option value="Lavagem Exterior Simples">Lavagem Exterior Simples (€15)</option>
+            <option value="Lavagem Exterior Completa">Lavagem Exterior Completa (€25)</option>
+            <option value="Interior + Exterior Simples">Interior + Exterior Simples</option>
+            <option value="Interior + Exterior Completa">Interior + Exterior Completa</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="clienteLocal">Zona</label>
+          <select id="clienteLocal" name="local" required>
+            <option value="Guimarães">Guimarães</option>
+            <option value="Braga">Braga</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="clienteData">Data</label>
+          <input type="date" id="clienteData" name="data" required>
+        </div>
+
+        <div class="form-group">
+          <label for="clienteHora">Hora</label>
+          <input type="time" id="clienteHora" name="hora" required>
+        </div>
+
+        <div class="form-group">
+          <label>Extras (opcional)</label>
+          <div class="extras-grid">
+            <label class="chk">
+              <input type="checkbox" name="extras" value="Remoção total de pelos (€3)">
+              <span>Remoção total de pelos (€3)</span>
+            </label>
+
+            <label class="chk">
+              <input type="checkbox" name="extras" value="Perfume interior (€3)">
+              <span>Perfume interior (€3)</span>
+            </label>
+
+            <label class="chk">
+              <input type="checkbox" name="extras" value="Hidratação plásticos/couro (€3)">
+              <span>Hidratação plásticos/couro (€3)</span>
+            </label>
+
+            <label class="chk">
+              <input type="checkbox" name="extras" value="Desinfeção a vapor (€5)">
+              <span>Desinfeção a vapor (€5)</span>
+            </label>
+
+            <label class="chk">
+              <input type="checkbox" name="extras" value="Limpeza do teto interior (€3)">
+              <span>Limpeza do teto interior (€3)</span>
+            </label>
+
+            <label class="chk">
+              <input type="checkbox" name="extras" value="Tratamento anti-chuva nos vidros (€5)">
+              <span>Tratamento anti-chuva nos vidros (€5)</span>
+            </label>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="clienteMensagem">Mensagem (opcional)</label>
+          <textarea id="clienteMensagem" name="mensagem" rows="3" placeholder="Notas adicionais (ex: carro muito sujo, portão, referências, etc.)"></textarea>
+        </div>
+
+        <!-- ✅ RESUMO (serviço + extras + deslocação + total) -->
+        <div class="summary-box" aria-live="polite">
+          <div class="summary-title">Resumo do preço</div>
+          <div class="summary-row"><span>Serviço:</span> <b id="sumService">—</b></div>
+          <div class="summary-row"><span>Extras:</span> <b id="sumExtras">—</b></div>
+          <div class="summary-row"><span>Deslocação:</span> <b id="sumTravel">—</b></div>
+          <div class="summary-row summary-total"><span>Total:</span> <b id="sumTotal">—</b></div>
+          <small class="help-text">O total pode variar se a distância real diferir do cálculo por linha reta.</small>
+        </div>
+
+        <!-- Hidden fields para EmailJS -->
+        <input type="hidden" id="clienteMapaUrl" name="mapa_url" value="">
+        <input type="hidden" id="clienteDistKm" name="dist_km" value="">
+        <input type="hidden" id="clienteTaxa" name="taxa" value="">
+        <input type="hidden" id="clienteTotal" name="total" value="">
+
+        <button type="submit" class="btn-primary btn-submit">
+          Confirmar Marcação
+        </button>
+      </form>
+
+      <div id="bookingResult" class="result"></div>
+    </div>
+  </section>
 
   <!-- =========================
        FOOTER
   ========================== -->
   <footer>
     <div class="container footer-content">
-
       <div class="footer-col">
         <h3>Wash&Clean</h3>
         <p>
@@ -441,7 +442,6 @@
           <li><a href="#">TikTok</a></li>
         </ul>
       </div>
-
     </div>
 
     <div class="copyright">
