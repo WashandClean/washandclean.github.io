@@ -3,7 +3,12 @@
  ***************************/
 const EMAILJS_PUBLIC_KEY = "cdiDJc8D7sHW03DtO";
 const EMAILJS_SERVICE_ID = "cdJDp8D7sHW03DtO";
-const EMAILJS_TEMPLATE_ID = "template_o4q3p79";
+
+// ✅ DONO (vai para o teu email)
+const EMAILJS_TEMPLATE_OWNER = "template_o4q3p79";
+
+// ✅ CLIENTE (vai para {{email}})
+const EMAILJS_TEMPLATE_CLIENT = "template_tjvfmk9";
 
 // Inicializar EmailJS (uma vez)
 (function () {
@@ -16,7 +21,28 @@ const EMAILJS_TEMPLATE_ID = "template_o4q3p79";
 window.addEventListener("DOMContentLoaded", function () {
   // ---------- Helpers ----------
   const round1 = (n) => Math.round(n * 10) / 10;
-  const eur = (n) => `${n.toFixed(2).replace(".", ",")}€`;
+
+  const money = (n) => {
+    const v = Number(n) || 0;
+    return `${v.toFixed(2).replace(".", ",")}€`;
+  };
+
+  const parseEuroFromText = (text) => {
+    const t = String(text || "");
+    const m = t.match(/(\d+(?:[.,]\d{1,2})?)/);
+    if (!m) return 0;
+    return Number(m[1].replace(",", ".")) || 0;
+  };
+
+  // Preços dos serviços (para calcular total)
+  const SERVICE_PRICES = {
+    "Lavagem Interior Simples": 15,
+    "Lavagem Interior Completa": 25,
+    "Lavagem Exterior Simples": 15,
+    "Lavagem Exterior Completa": 25,
+    "Interior + Exterior Simples": 30,
+    "Interior + Exterior Completa": 50,
+  };
 
   // Bases (centros aproximados)
   const BASES = [
@@ -32,13 +58,20 @@ window.addEventListener("DOMContentLoaded", function () {
   // Campos do formulário
   const inputZona = document.getElementById("clienteLocal");
   const inputMorada = document.getElementById("clienteMorada");
+  const selectService = document.getElementById("clienteServico");
 
   // Painel (spans)
-  const feeZone = document.getElementById("feeZone");
+  const feeZone = document.getElementElt("feeZone");
   const feeDistance = document.getElementById("feeDistance");
   const feeExtraKm = document.getElementById("feeExtraKm");
   const feeTotal = document.getElementById("feeTotal");
   const feeNote = document.getElementById("feeNote");
+
+  // Resumo no formulário (se existir no HTML)
+  const sumService = document.getElementById("sumService");
+  const sumExtras = document.getElementById("sumExtras");
+  const sumTravel = document.getElementById("sumTravel");
+  const sumTotal = document.getElementById("sumTotal");
 
   // Hidden inputs (criar se não existirem)
   function ensureHidden(id, name) {
@@ -53,30 +86,63 @@ window.addEventListener("DOMContentLoaded", function () {
     }
     return el;
   }
+
   const hidMaps = ensureHidden("clienteMapaUrl", "mapa_url");
   const hidDist = ensureHidden("clienteDistKm", "dist_km");
   const hidFee = ensureHidden("clienteTaxa", "taxa");
+  const hidTotal = ensureHidden("clienteTotal", "total");
+
+  // ---------- Cálculo do total ----------
+  const getExtras = () =>
+    Array.from(document.querySelectorAll('input[name="extras"]:checked')).map((x) => x.value);
+
+  const calcExtrasPrice = (extrasList) =>
+    extrasList.reduce((acc, item) => acc + parseEuroFromText(item), 0);
+
+  const getTravelFee = () => Number(hidFee.value || 0) || 0;
+
+  const calcTotalsAndRender = () => {
+    const serviceName = selectService ? selectService.value : "";
+    const servicePrice = SERVICE_PRICES[serviceName] ?? 0;
+
+    const extrasList = getExtras();
+    const extrasPrice = calcExtrasPrice(extrasList);
+
+    const travelFee = getTravelFee();
+    const total = servicePrice + extrasPrice + travelFee;
+
+    // Atualiza resumo no formulário (se existir)
+    if (sumService) sumService.textContent = money(servicePrice);
+    if (sumExtras) sumExtras.textContent = extrasPrice > 0 ? money(extrasPrice) : "0,00€";
+    if (sumTravel) sumTravel.textContent = travelFee > 0 ? money(travelFee) : "Grátis";
+    if (sumTotal) sumTotal.textContent = money(total);
+
+    // Guardar total para email
+    hidTotal.value = total.toFixed(2);
+
+    return { serviceName, servicePrice, extrasList, extrasPrice, travelFee, total };
+  };
+
+  // Atualiza resumo quando mudam inputs
+  if (selectService) selectService.addEventListener("change", calcTotalsAndRender);
+  document.querySelectorAll('input[name="extras"]').forEach((cb) => {
+    cb.addEventListener("change", calcTotalsAndRender);
+  });
 
   // ---------- Iniciar mapa ----------
   let map, clickMarker;
 
   if (mapEl && window.L) {
     map = L.map("serviceMap", { scrollWheelZoom: false });
-
-    // Centrar no Minho (entre Braga e Guimarães)
     map.setView([41.51, -8.36], 11);
 
-    // Tiles (OpenStreetMap)
     L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
       attribution: '&copy; OpenStreetMap contributors',
       maxZoom: 19,
     }).addTo(map);
 
-    // Markers das bases + círculo grátis 15km em cada base
     BASES.forEach((b) => {
-      L.marker([b.lat, b.lng])
-        .addTo(map)
-        .bindPopup(`<b>${b.name}</b> (base)`);
+      L.marker([b.lat, b.lng]).addTo(map).bindPopup(`<b>${b.name}</b> (base)`);
 
       L.circle([b.lat, b.lng], {
         radius: FREE_KM * 1000,
@@ -87,15 +153,12 @@ window.addEventListener("DOMContentLoaded", function () {
       }).addTo(map);
     });
 
-    // Clique para escolher local
     map.on("click", (e) => {
       const { lat, lng } = e.latlng;
 
-      // marker do cliente
       if (clickMarker) clickMarker.remove();
       clickMarker = L.marker([lat, lng]).addTo(map);
 
-      // distância à base mais próxima
       let best = null;
       BASES.forEach((b) => {
         const dMeters = map.distance([lat, lng], [b.lat, b.lng]);
@@ -106,11 +169,10 @@ window.addEventListener("DOMContentLoaded", function () {
       const extraKm = Math.max(0, distKm - FREE_KM);
       const fee = extraKm * RATE;
 
-      // Painel
       if (feeZone) feeZone.textContent = best.name;
       if (feeDistance) feeDistance.textContent = `${round1(distKm)} km`;
       if (feeExtraKm) feeExtraKm.textContent = `${round1(extraKm)} km`;
-      if (feeTotal) feeTotal.textContent = fee === 0 ? "Grátis" : eur(fee);
+      if (feeTotal) feeTotal.textContent = fee === 0 ? "Grátis" : money(fee);
 
       if (feeNote) {
         feeNote.textContent =
@@ -119,28 +181,30 @@ window.addEventListener("DOMContentLoaded", function () {
             : `Depois de ${FREE_KM} km: ${RATE.toFixed(2).replace(".", ",")}€/km (base mais próxima: ${best.name}).`;
       }
 
-      // Google Maps link
       const mapsUrl = `https://www.google.com/maps?q=${lat.toFixed(6)},${lng.toFixed(6)}`;
 
-      // Atualiza "Zona"
       if (inputZona) inputZona.value = best.name;
 
-      // Preenche morada automaticamente (podes editar manualmente depois)
       if (inputMorada) {
         inputMorada.value = `Local selecionado no mapa: ${lat.toFixed(6)}, ${lng.toFixed(6)} | ${mapsUrl}`;
       }
 
-      // Hidden (para email)
       hidMaps.value = mapsUrl;
       hidDist.value = round1(distKm).toString();
       hidFee.value = fee === 0 ? "0.00" : fee.toFixed(2);
 
       mapEl.dataset.selected = "1";
+
+      // ✅ atualizar total quando muda deslocação
+      calcTotalsAndRender();
     });
 
     setTimeout(() => map.invalidateSize(), 200);
     window.addEventListener("resize", () => map.invalidateSize());
   }
+
+  // Inicializa o resumo ao abrir
+  calcTotalsAndRender();
 
   /***************************
    * FORMULÁRIO DE MARCAÇÃO
@@ -165,10 +229,7 @@ window.addEventListener("DOMContentLoaded", function () {
     const time = document.getElementById("clienteHora").value;
 
     const msg = document.getElementById("clienteMensagem").value.trim();
-
-    // Extras (checkboxes)
-    const extras = Array.from(document.querySelectorAll('input[name="extras"]:checked'))
-      .map((x) => x.value);
+    const extrasList = getExtras();
 
     if (!name || !email || !phone || !morada || !date || !time) {
       resultDiv.textContent = "Preencha todos os campos obrigatórios.";
@@ -177,10 +238,10 @@ window.addEventListener("DOMContentLoaded", function () {
 
     // Validar horário
     const [year, month, day] = date.split("-").map(Number);
-    const [h, m] = time.split(":").map(Number);
-    const selected = new Date(year, month - 1, day, h, m);
+    const [hh, mm] = time.split(":").map(Number);
+    const selected = new Date(year, month - 1, day, hh, mm);
     const weekday = selected.getDay();
-    const totalMin = h * 60 + m;
+    const totalMin = hh * 60 + mm;
 
     let startMin, endMin;
     if (weekday >= 1 && weekday <= 5) {
@@ -209,12 +270,17 @@ window.addEventListener("DOMContentLoaded", function () {
     bookings.push(bookingKey);
     localStorage.setItem(bookingsKey, JSON.stringify(bookings));
 
-    // Monta mensagem final
-    const extrasText = extras.length ? `Extras: ${extras.join(", ")}` : "Extras: nenhum";
+    // ✅ valores finais
+    const { servicePrice, extrasPrice, travelFee, total } = calcTotalsAndRender();
+
+    // Mensagem final
+    const extrasText = extrasList.length ? `Extras: ${extrasList.join(", ")}` : "Extras: nenhum";
     const userMsg = msg ? `Notas: ${msg}` : "Notas: sem notas";
     const finalMessage = `${extrasText}\n${userMsg}`;
 
-    // ✅ TemplateParams ALINHADOS COM EMAILJS
+    const extrasTextClean = extrasList.length ? extrasList.join(", ") : "Nenhum";
+
+    // ✅ PARAMS (usa os mesmos placeholders nos dois templates)
     const templateParams = {
       name,
       email,
@@ -223,13 +289,16 @@ window.addEventListener("DOMContentLoaded", function () {
       local,
       morada,
 
-      // extras no email
-      extras: extras.join(", ") || "Nenhum",
-
-      // mapa + distância + taxa
       mapa_url: hidMaps.value || "",
       dist_km: hidDist.value || "",
-      taxa: hidFee.value || "",
+      taxa: travelFee.toFixed(2),
+
+      extras: extrasTextClean,
+
+      service_price: servicePrice.toFixed(2),
+      extras_price: extrasPrice.toFixed(2),
+      travel_fee: travelFee.toFixed(2),
+      total: total.toFixed(2),
 
       date,
       time,
@@ -238,13 +307,18 @@ window.addEventListener("DOMContentLoaded", function () {
 
     resultDiv.textContent = "A enviar marcação...";
 
+    // 1) Email para TI (DONO)
     emailjs
-      .send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, templateParams)
+      .send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_OWNER, templateParams)
       .then(() => {
-        resultDiv.textContent = "✅ Marcação efetuada com sucesso! Email enviado.";
+        // 2) Email de confirmação para o CLIENTE
+        return emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_CLIENT, templateParams);
+      })
+      .then(() => {
+        resultDiv.textContent = "✅ Marcação efetuada com sucesso! Emails enviados.";
         form.reset();
 
-        // reset painel
+        // reset painel mapa
         if (feeZone) feeZone.textContent = "—";
         if (feeDistance) feeDistance.textContent = "—";
         if (feeExtraKm) feeExtraKm.textContent = "—";
@@ -255,7 +329,10 @@ window.addEventListener("DOMContentLoaded", function () {
 
         hidMaps.value = "";
         hidDist.value = "";
-        hidFee.value = "";
+        hidFee.value = "0.00";
+        hidTotal.value = "";
+
+        calcTotalsAndRender();
       })
       .catch((error) => {
         console.error("EmailJS erro:", error);
@@ -263,4 +340,7 @@ window.addEventListener("DOMContentLoaded", function () {
       });
   });
 });
+
+// ✅ helper (evita erro se não existir)
+function document.getElementByIdSafe(id){ return document.getElementById(id); }
 
